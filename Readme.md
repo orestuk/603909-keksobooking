@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Орест Ярич](https://up.htmlacademy.ru/javascript/13/user/603909).
-* Наставник: `Неизвестно`.
+* Наставник: `Валерий Заочный`.
 
 ---
 
