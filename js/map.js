@@ -22,6 +22,24 @@ var TYPE_DICTIONARY = {
   house: 'Дом',
   palace: 'Дворец'
 };
+var MIN_PRICE_DICTIONARY = {
+  bungalo: 0,
+  flat: 1000,
+  house: 5000,
+  palace: 10000
+};
+var CAPACITY_ROOMS_DICTIONARY = {
+  100: [0],
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3]
+};
+var CAPACITY_OPTIONS = {
+  3: 'для 3 гостей',
+  2: 'для 2 гостей',
+  1: 'для 1 гостя',
+  0: 'не для гостей'
+};
 
 var activeState = false;
 var mapElement = document.querySelector('.map');
@@ -36,7 +54,12 @@ var mapFilterContainer = document.querySelector('.map__filters-container');
 var adForm = document.querySelector('.ad-form');
 var adFormFieldsets = document.querySelectorAll('.ad-form fieldset');
 var adAddress = document.querySelector('input[name=address]');
-
+var adType = document.querySelector('select[name=type]');
+var adPrice = document.querySelector('input[name=price]');
+var adTimein = document.querySelector('select[name=timein]');
+var adTimeout = document.querySelector('select[name=timeout]');
+var adRooms = document.querySelector('select[name=rooms]');
+var adCapacity = document.querySelector('select[name=capacity]');
 var adItems = [];
 
 var getRandomIndex = function (array) {
@@ -132,11 +155,11 @@ var closePopup = function (card) {
 
 var renderCard = function (ad) {
   // Check if some curd already opened and delete it
-  var openCard = document.querySelector('.map__card');
+  var openedCard = document.querySelector('.map__card');
   var card = cardTemplate.cloneNode(true);
-  var popupClose = card.querySelector('.popup__close');
-  if (openCard !== null) {
-    openCard.remove();
+  var popupCloser = card.querySelector('.popup__close');
+  if (openedCard !== null) {
+    openedCard.remove();
   }
   card.querySelector('.popup__title').textContent = ad.offer.title;
   card.querySelector('.popup__text--address').textContent = ad.offer.address;
@@ -157,10 +180,10 @@ var renderCard = function (ad) {
     card.appendChild(photo);
   }
   card.querySelector('.popup__avatar').src = ad.author.avatar;
-  popupClose.addEventListener('click', function () {
+  popupCloser.addEventListener('click', function () {
     closePopup(card);
   });
-  popupClose.addEventListener('keydown', function (evt) {
+  popupCloser.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
       closePopup(card);
     }
@@ -248,6 +271,35 @@ var setActiveState = function () {
 mainPin.addEventListener('mouseup', function () {
   setActiveState();
   setAdAddressValue(getMainPinLocation());
+});
+
+var renderCapacityOptions = function (allowedOptions) {
+  adCapacity.innerHTML = '';
+  var fragment = document.createDocumentFragment();
+  for (var i = 0; i < allowedOptions.length; i++) {
+    var o = document.createElement('option');
+    o.value = allowedOptions[i];
+    o.textContent = CAPACITY_OPTIONS[o.value];
+    fragment.appendChild(o);
+  }
+  adCapacity.appendChild(fragment);
+};
+
+adType.addEventListener('change', function () {
+  adPrice.placeholder = MIN_PRICE_DICTIONARY[adType.value];
+  adPrice.min = MIN_PRICE_DICTIONARY[adType.value];
+});
+
+adTimein.addEventListener('change', function () {
+  adTimeout.value = adTimein.value;
+});
+
+adTimeout.addEventListener('change', function () {
+  adTimein.value = adTimeout.value;
+});
+
+adRooms.addEventListener('change', function () {
+  renderCapacityOptions(CAPACITY_ROOMS_DICTIONARY[adRooms.value]);
 });
 
 setInactiveState();
