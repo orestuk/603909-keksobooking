@@ -249,6 +249,11 @@ var enableAdFormFields = function () {
   }
 };
 
+var setAdPriceAttributes = function () {
+  adPrice.placeholder = MIN_PRICE_DICTIONARY[adType.value];
+  adPrice.min = MIN_PRICE_DICTIONARY[adType.value];
+};
+
 var setInactiveState = function () {
   mapElement.classList.add('map--faded');
   disableAdFormFields();
@@ -266,6 +271,8 @@ var setActiveState = function () {
   adItems = generateAdds(AD_QUANTITY);
   renderMapPinList(adItems);
   activeState = true;
+  setAdPriceAttributes();
+  setAdCapacityOptions();
 };
 
 mainPin.addEventListener('mouseup', function () {
@@ -273,7 +280,7 @@ mainPin.addEventListener('mouseup', function () {
   setAdAddressValue(getMainPinLocation());
 });
 
-var renderCapacityOptions = function (allowedOptions) {
+var renderAdCapacityOptions = function (allowedOptions) {
   adCapacity.innerHTML = '';
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < allowedOptions.length; i++) {
@@ -285,9 +292,17 @@ var renderCapacityOptions = function (allowedOptions) {
   adCapacity.appendChild(fragment);
 };
 
+var setAdCapacityOptions = function () {
+  var currentVal = adCapacity.value;
+  var allowedOpt = CAPACITY_ROOMS_DICTIONARY[adRooms.value];
+  renderAdCapacityOptions(allowedOpt);
+  if (allowedOpt.indexOf(+currentVal) !== -1) {
+    adCapacity.value = currentVal;
+  }
+};
+
 adType.addEventListener('change', function () {
-  adPrice.placeholder = MIN_PRICE_DICTIONARY[adType.value];
-  adPrice.min = MIN_PRICE_DICTIONARY[adType.value];
+  setAdPriceAttributes();
 });
 
 adTimein.addEventListener('change', function () {
@@ -299,7 +314,7 @@ adTimeout.addEventListener('change', function () {
 });
 
 adRooms.addEventListener('change', function () {
-  renderCapacityOptions(CAPACITY_ROOMS_DICTIONARY[adRooms.value]);
+  setAdCapacityOptions();
 });
 
 setInactiveState();
