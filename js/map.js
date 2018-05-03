@@ -7,7 +7,9 @@ var MIN_PIN_Y = 150;
 var MAIN_PIN_ACTIVE_HEIGHT = 84;
 var MAIN_PIN_INACTIVE_HEIGHT = 200;
 var MAIN_PIN_WIDTH = 62;
-var AD_QUANTITY = 8;
+var MAIN_PIN_LEFT = 570;
+var MAIN_PIN_TOP = 375;
+// var AD_QUANTITY = 8;
 
 var activeState = false;
 var mapElement = document.querySelector('.map');
@@ -38,7 +40,9 @@ var openPopup = function (ad) {
   document.addEventListener('keydown', onPopupEscPress);
 };
 var closePopup = function (card) {
-  card.remove();
+  if (card !== null) {
+    card.remove();
+  }
   document.removeEventListener('keydown', onPopupEscPress);
 };
 var addPinClickListener = function (pin, ad) {
@@ -46,6 +50,7 @@ var addPinClickListener = function (pin, ad) {
     openPopup(ad);
   });
 };
+// Created separate function for right passing ad value
 var addPinKeyDownListener = function (pin, ad) {
   pin.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
@@ -72,10 +77,25 @@ var getMainPinLocation = function () {
   return result;
 };
 
+var submitHandler = function () {
+  setInactiveState();
+  var successElement = document.querySelector('.success');
+  successElement.classList.remove('hidden');
+  setTimeout(function () {
+    successElement.classList.add('hidden');
+  }, 2000);
+};
+
 var setInactiveState = function () {
   mapElement.classList.add('map--faded');
+  mainPin.style.left = MAIN_PIN_LEFT + 'px';
+  mainPin.style.top = MAIN_PIN_TOP + 'px';
+  closePopup(window.card.getOpenedCard());
+  window.pin.removeAllPins();
   window.form.disableForm();
+  window.form.formElement.reset();
   window.form.setAddressValue(getMainPinLocation());
+  activeState = false;
 };
 var setActiveState = function () {
   if (activeState) {
@@ -83,7 +103,8 @@ var setActiveState = function () {
   }
   mapElement.classList.remove('map--faded');
   window.form.enableForm();
-  adItems = window.data.generateAdds(AD_QUANTITY);
+  // adItems = window.data.generateAdds(AD_QUANTITY);
+  window.backend.load(renderMapPinList, window.error.renderError);
   renderMapPinList(adItems);
   activeState = true;
 };
@@ -138,6 +159,11 @@ mainPin.addEventListener('mousedown', function (evt) {
 
   document.addEventListener('mousemove', onMouseMove);
   document.addEventListener('mouseup', onMouseUp);
+});
+
+window.form.formElement.addEventListener('submit', function (evt) {
+  window.backend.save(new FormData(window.form.formElement), submitHandler, window.error.renderError);
+  evt.preventDefault();
 });
 
 setInactiveState();

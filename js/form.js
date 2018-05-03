@@ -94,6 +94,7 @@ window.form = (function () {
   setCapacityOptions();
   // ====
   return {
+    formElement: form,
     enableForm: enableForm,
     disableForm: disableForm,
     setAddressValue: setAddressValue

@@ -7,14 +7,14 @@ window.card = (function () {
     palace: 'Дворец'
   };
   var cardTemplate = document.querySelector('template').content.querySelector('.map__card');
-  var openedCard = document.querySelector('.map__card');
   var photoTemplate = document.querySelector('template').content.querySelector('.popup__photo');
   var renderCard = function (ad) {
-    // Check if some curd already opened and delete it
-    var card = cardTemplate.cloneNode(true);
+    // Check if some card already opened and delete it
+    var openedCard = getOpenedCard();
     if (openedCard !== null) {
       openedCard.remove();
     }
+    var card = cardTemplate.cloneNode(true);
     card.querySelector('.popup__title').textContent = ad.offer.title;
     card.querySelector('.popup__text--address').textContent = ad.offer.address;
     card.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь.';
@@ -36,7 +36,11 @@ window.card = (function () {
     card.querySelector('.popup__avatar').src = ad.author.avatar;
     return card;
   };
+  var getOpenedCard = function () {
+    return document.querySelector('.map__card');
+  };
   return {
     renderCard: renderCard,
+    getOpenedCard: getOpenedCard
   };
 })();
