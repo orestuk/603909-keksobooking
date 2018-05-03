@@ -13,7 +13,14 @@ window.pin = (function () {
     img.alt = ad.offer.title;
     return pin;
   };
+  var removeAllPins = function () {
+    var pins = document.querySelectorAll('.map__pins button[type=button]');
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
+  };
   return {
-    renderPin: renderPin
+    renderPin: renderPin,
+    removeAllPins: removeAllPins
   };
 })();
