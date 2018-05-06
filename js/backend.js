@@ -18,7 +18,7 @@ window.backend = (function () {
     });
     xhr.send();
   };
-  var save = function save(data, onLoad, onError) {
+  var save = function (data, onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.open('POST', POST_URL);

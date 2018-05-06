@@ -59,19 +59,16 @@ window.filter = (function () {
   featuresEls.forEach(function (value) {
     value.addEventListener('change', updateHandler);
   });
-  var successfulHandler = function (data) {
-    addItems = data;
-  };
-  var errorHandler = function (erMessage) {
-    window.error.renderError(erMessage);
-  };
   var resetFilter = function () {
     mapFilters.reset();
   };
-
-  window.backend.load(successfulHandler, errorHandler);
+  var setFilter = function (data) {
+    addItems = data;
+    updatePins();
+  };
   return {
     updatePins: updatePins,
-    resetFilter: resetFilter
+    resetFilter: resetFilter,
+    setFilter: setFilter
   };
 })();
