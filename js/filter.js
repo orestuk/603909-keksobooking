@@ -65,9 +65,13 @@ window.filter = (function () {
   var errorHandler = function (erMessage) {
     window.error.renderError(erMessage);
   };
+  var resetFilter = function () {
+    mapFilters.reset();
+  };
 
   window.backend.load(successfulHandler, errorHandler);
   return {
-    updatePins: updatePins
+    updatePins: updatePins,
+    resetFilter: resetFilter
   };
 })();
