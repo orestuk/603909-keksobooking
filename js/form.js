@@ -1,5 +1,4 @@
 'use strict';
-
 window.form = (function () {
   var minPriceMap = {
     bungalo: 0,
@@ -25,19 +24,19 @@ window.form = (function () {
   var capacity = document.querySelector('select[name=capacity]');
   var type = document.querySelector('select[name=type]');
   var price = document.querySelector('input[name=price]');
-  var form = document.querySelector('.ad-form');
+  var formElement = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('.ad-form fieldset');
   var address = document.querySelector('input[name=address]');
 
   var renderAdCapacityOptions = function (allowedOptions) {
     capacity.innerHTML = '';
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < allowedOptions.length; i++) {
+    allowedOptions.forEach(function (value) {
       var o = document.createElement('option');
-      o.value = allowedOptions[i];
+      o.value = value;
       o.textContent = capacityNameMap[o.value];
       fragment.appendChild(o);
-    }
+    });
     capacity.appendChild(fragment);
   };
 
@@ -60,17 +59,17 @@ window.form = (function () {
   };
 
   var disableForm = function () {
-    form.classList.add('ad-form--disabled');
-    for (var i = 0; i < fieldsets.length; i++) {
-      fieldsets[i].disabled = true;
-    }
+    formElement.classList.add('ad-form--disabled');
+    fieldsets.forEach(function (value) {
+      value.disabled = true;
+    });
   };
 
   var enableForm = function () {
-    form.classList.remove('ad-form--disabled');
-    for (var i = 0; i < fieldsets.length; i++) {
-      fieldsets[i].disabled = false;
-    }
+    formElement.classList.remove('ad-form--disabled');
+    fieldsets.forEach(function (value) {
+      value.disabled = false;
+    });
   };
 
   type.addEventListener('change', function () {
@@ -89,14 +88,38 @@ window.form = (function () {
     setCapacityOptions();
   });
 
-  // Initiate form fields
+  var submitHandler = function () {
+    form.onSubmitForm();
+    var successElement = document.querySelector('.success');
+    successElement.classList.remove('hidden');
+    setTimeout(function () {
+      successElement.classList.add('hidden');
+    }, 2000);
+  };
+  var resetForm = function () {
+    formElement.reset();
+  };
+
+  formElement.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(formElement), submitHandler, window.error.renderError);
+    evt.preventDefault();
+  });
+
+  formElement.addEventListener('reset', function () {
+    form.onResetForm();
+  });
+
+  // Initiate formElement fields
   setPriceAttributes();
   setCapacityOptions();
-  // ====
-  return {
-    formElement: form,
+  var form = {
+    formElement: formElement,
+    onSubmitForm: function () {},
+    onResetForm: function () {},
     enableForm: enableForm,
     disableForm: disableForm,
+    resetForm: resetForm,
     setAddressValue: setAddressValue
   };
+  return form;
 })();
