@@ -1,19 +1,19 @@
 'use strict';
 
 window.form = (function () {
-  var MIN_PRICE_DICTIONARY = {
+  var minPriceMap = {
     bungalo: 0,
     flat: 1000,
     house: 5000,
     palace: 10000
   };
-  var CAPACITY_ROOMS_DICTIONARY = {
+  var capacityRoomsMap = {
     100: [0],
     1: [1],
     2: [1, 2],
     3: [1, 2, 3]
   };
-  var CAPACITY_OPTIONS = {
+  var capacityNameMap = {
     3: 'для 3 гостей',
     2: 'для 2 гостей',
     1: 'для 1 гостя',
@@ -35,7 +35,7 @@ window.form = (function () {
     for (var i = 0; i < allowedOptions.length; i++) {
       var o = document.createElement('option');
       o.value = allowedOptions[i];
-      o.textContent = CAPACITY_OPTIONS[o.value];
+      o.textContent = capacityNameMap[o.value];
       fragment.appendChild(o);
     }
     capacity.appendChild(fragment);
@@ -43,7 +43,7 @@ window.form = (function () {
 
   var setCapacityOptions = function () {
     var currentVal = capacity.value;
-    var allowedOpt = CAPACITY_ROOMS_DICTIONARY[rooms.value];
+    var allowedOpt = capacityRoomsMap[rooms.value];
     renderAdCapacityOptions(allowedOpt);
     if (allowedOpt.indexOf(+currentVal) !== -1) {
       capacity.value = currentVal;
@@ -51,8 +51,8 @@ window.form = (function () {
   };
 
   var setPriceAttributes = function () {
-    price.placeholder = MIN_PRICE_DICTIONARY[type.value];
-    price.min = MIN_PRICE_DICTIONARY[type.value];
+    price.placeholder = minPriceMap[type.value];
+    price.min = minPriceMap[type.value];
   };
 
   var setAddressValue = function (loc) {

@@ -1,7 +1,4 @@
 'use strict';
-
-var ESC_KEYCODE = 27;
-var ENTER_KEYCODE = 13;
 var MAX_PIN_Y = 500;
 var MIN_PIN_Y = 150;
 var MAIN_PIN_ACTIVE_HEIGHT = 84;
@@ -13,61 +10,7 @@ var MAIN_PIN_TOP = 375;
 
 var activeState = false;
 var mapElement = document.querySelector('.map');
-var mapPinsElement = document.querySelector('.map__pins');
 var mainPin = document.querySelector('.map__pin--main');
-var mapFilterContainer = document.querySelector('.map__filters-container');
-
-var adItems = [];
-
-var onPopupEscPress = function (evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    document.removeEventListener('keydown', onPopupEscPress);
-    document.querySelector('.map__card').remove();
-  }
-};
-var openPopup = function (ad) {
-  var card = window.card.renderCard(ad);
-  mapElement.insertBefore(card, mapFilterContainer);
-  var popupCloser = card.querySelector('.popup__close');
-  popupCloser.addEventListener('click', function () {
-    closePopup(card);
-  });
-  popupCloser.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      closePopup(card);
-    }
-  });
-  document.addEventListener('keydown', onPopupEscPress);
-};
-var closePopup = function (card) {
-  if (card !== null) {
-    card.remove();
-  }
-  document.removeEventListener('keydown', onPopupEscPress);
-};
-var addPinClickListener = function (pin, ad) {
-  pin.addEventListener('click', function () {
-    openPopup(ad);
-  });
-};
-// Created separate function for right passing ad value
-var addPinKeyDownListener = function (pin, ad) {
-  pin.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === ENTER_KEYCODE) {
-      openPopup(ad);
-    }
-  });
-};
-var renderMapPinList = function (ads) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < ads.length; i++) {
-    var pin = window.pin.renderPin(ads[i]);
-    addPinClickListener(pin, ads[i]);
-    addPinKeyDownListener(pin, ads[i]);
-    fragment.appendChild(pin);
-  }
-  mapPinsElement.appendChild(fragment);
-};
 
 var getMainPinLocation = function () {
   var result = {};
@@ -90,7 +33,7 @@ var setInactiveState = function () {
   mapElement.classList.add('map--faded');
   mainPin.style.left = MAIN_PIN_LEFT + 'px';
   mainPin.style.top = MAIN_PIN_TOP + 'px';
-  closePopup(window.card.getOpenedCard());
+  window.card.closePopup(window.card.getOpenedCard());
   window.pin.removeAllPins();
   window.form.disableForm();
   window.form.formElement.reset();
@@ -103,9 +46,7 @@ var setActiveState = function () {
   }
   mapElement.classList.remove('map--faded');
   window.form.enableForm();
-  // adItems = window.data.generateAdds(AD_QUANTITY);
-  window.backend.load(renderMapPinList, window.error.renderError);
-  renderMapPinList(adItems);
+  window.filter.updatePins();
   activeState = true;
 };
 
@@ -141,8 +82,8 @@ mainPin.addEventListener('mousedown', function (evt) {
       newY = MIN_PIN_Y - MAIN_PIN_ACTIVE_HEIGHT;
     }
     // Correct Calculate new X position according to the area region
-    if (newX + MAIN_PIN_WIDTH > mapPinsElement.offsetWidth) {
-      newX = mapPinsElement.offsetWidth - MAIN_PIN_WIDTH / 2;
+    if (newX + MAIN_PIN_WIDTH > window.pin.mapPinsElement.offsetWidth) {
+      newX = window.pin.mapPinsElement.offsetWidth - MAIN_PIN_WIDTH / 2;
     } else if (newX + MAIN_PIN_WIDTH / 2 < 0) {
       newX = 0 - MAIN_PIN_WIDTH / 2;
     }
