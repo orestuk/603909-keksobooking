@@ -1,6 +1,10 @@
 'use strict';
 
 window.data = (function () {
+  var KeyCode = {
+    ENTER: 13,
+    ESC: 27
+  };
   var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
   var TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -88,6 +92,7 @@ window.data = (function () {
 
   return {
     generateAdds: generateAdds,
+    KeyCode: KeyCode,
     FEATURES: FEATURES
   };
 })();
