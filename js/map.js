@@ -19,7 +19,21 @@ window.map = (function () {
     result.y = mainPin.offsetTop + pinHeight;
     return result;
   };
-
+  var successfulHandler = function (data) {
+    window.filter.setFilter(data);
+  };
+  var errorHandler = function (erMessage) {
+    window.error.renderError(erMessage);
+  };
+  var setActiveState = function () {
+    if (activeState) {
+      return;
+    }
+    window.backend.load(successfulHandler, errorHandler);
+    mapElement.classList.remove('map--faded');
+    window.form.enableForm();
+    activeState = true;
+  };
   var setInactiveState = function () {
     mapElement.classList.add('map--faded');
     mainPin.style.left = MAIN_PIN_LEFT + 'px';
@@ -32,16 +46,6 @@ window.map = (function () {
     window.filter.resetFilter();
     activeState = false;
   };
-  var setActiveState = function () {
-    if (activeState) {
-      return;
-    }
-    mapElement.classList.remove('map--faded');
-    window.form.enableForm();
-    window.filter.updatePins();
-    activeState = true;
-  };
-
   mainPin.addEventListener('mouseup', function () {
     if (!activeState) {
       setActiveState();
