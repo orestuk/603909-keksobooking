@@ -29,23 +29,23 @@ window.form = (function () {
   var address = document.querySelector('input[name=address]');
 
   var renderAdCapacityOptions = function (allowedOptions) {
-    capacity.innerHTML = '';
+    capacity.innerHTML = '';  
     var fragment = document.createDocumentFragment();
     allowedOptions.forEach(function (value) {
-      var o = document.createElement('option');
-      o.value = value;
-      o.textContent = capacityNameMap[o.value];
-      fragment.appendChild(o);
+      var option = document.createElement('option');
+      option.value = value;
+      option.textContent = capacityNameMap[option.value];
+      fragment.appendChild(option);
     });
     capacity.appendChild(fragment);
   };
 
   var setCapacityOptions = function () {
-    var currentVal = capacity.value;
+    var currentValue = capacity.value;
     var allowedOpt = capacityRoomsMap[rooms.value];
     renderAdCapacityOptions(allowedOpt);
-    if (allowedOpt.indexOf(+currentVal) !== -1) {
-      capacity.value = currentVal;
+    if (allowedOpt.indexOf(+currentValue) !== -1) {
+      capacity.value = currentValue;
     }
   };
 

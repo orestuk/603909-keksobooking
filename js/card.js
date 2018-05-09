@@ -1,5 +1,6 @@
 'use strict';
 window.card = (function () {
+  var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var typeNameMap = {
     flat: 'Квартира',
     bungalo: 'Бунгало',
@@ -23,7 +24,7 @@ window.card = (function () {
     card.querySelector('.popup__type').textContent = typeNameMap[ad.offer.type];
     card.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей.';
     card.querySelector('.popup__text--time').textContent = 'заезд после ' + ad.offer.checking + ', выезд до ' + ad.offer.checkout + '.';
-    window.data.FEATURES.forEach(function (value) {
+    FEATURES.forEach(function (value) {
       if (ad.offer.features.indexOf(value) === -1) {
         card.querySelector('.popup__feature--' + value).remove();
       }

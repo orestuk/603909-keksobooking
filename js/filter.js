@@ -14,7 +14,7 @@ window.filter = (function () {
       max: 10000000
     }
   };
-  var addItems = [];
+  var adItems = [];
   var mapFilters = document.querySelector('.map__filters');
   var typeEl = mapFilters.querySelector('select[name=housing-type]');
   var priceEl = mapFilters.querySelector('select[name=housing-price]');
@@ -24,26 +24,26 @@ window.filter = (function () {
   var updatePins = function () {
     window.pin.removeAllPins();
     window.card.closePopup(window.card.getOpenedCard());
-    var list = addItems.filter(function (et) {
-      var s = true;
+    var list = adItems.filter(function (ad) {
+      var result = true;
       if (typeEl.value !== 'any') {
-        s = s && typeEl.value === et.offer.type;
+        result = result && typeEl.value === ad.offer.type;
       }
       if (priceEl.value !== 'any') {
-        s = s && (priceMap[priceEl.value].min <= et.offer.price) && (et.offer.price < priceMap[priceEl.value].max);
+        result = result && (priceMap[priceEl.value].min <= ad.offer.price) && (ad.offer.price < priceMap[priceEl.value].max);
       }
       if (roomsEl.value !== 'any') {
-        s = s && +roomsEl.value === et.offer.rooms;
+        result = result && +roomsEl.value === ad.offer.rooms;
       }
       if (guestsEl.value !== 'any') {
-        s = s && +guestsEl.value === et.offer.guests;
+        result = result && +guestsEl.value === ad.offer.guests;
       }
       featuresEls.forEach(function (item) {
         if (item.checked) {
-          s = s && et.offer.features.indexOf(item.value) !== -1;
+          result = result && ad.offer.features.indexOf(item.value) !== -1;
         }
       });
-      return s;
+      return result;
     });
     window.pin.renderMapPinList(list.slice(0, 5));
   };
@@ -63,11 +63,10 @@ window.filter = (function () {
     mapFilters.reset();
   };
   var setFilter = function (data) {
-    addItems = data;
+    adItems = data;
     updatePins();
   };
   return {
-    updatePins: updatePins,
     resetFilter: resetFilter,
     setFilter: setFilter
   };
