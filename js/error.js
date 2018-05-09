@@ -1,4 +1,5 @@
 'use strict';
+var ERROR_POPUP_TIMEOUT = 3000;
 window.error = (function () {
   var renderError = function (erMessage) {
     var err = document.createElement('div');
@@ -11,7 +12,7 @@ window.error = (function () {
     document.body.insertAdjacentElement('afterbegin', err);
     setTimeout(function () {
       err.remove();
-    }, 3000);
+    }, ERROR_POPUP_TIMEOUT);
   };
   return {
     renderError: renderError

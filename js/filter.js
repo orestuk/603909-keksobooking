@@ -1,5 +1,6 @@
 'use strict';
 window.filter = (function () {
+  var SELECT_ANY_VALUE = 'any';
   var priceMap = {
     low: {
       min: 0,
@@ -26,16 +27,16 @@ window.filter = (function () {
     window.card.closePopup(window.card.getOpenedCard());
     var list = adItems.filter(function (ad) {
       var result = true;
-      if (typeEl.value !== 'any') {
+      if (typeEl.value !== SELECT_ANY_VALUE) {
         result = result && typeEl.value === ad.offer.type;
       }
-      if (priceEl.value !== 'any') {
+      if (priceEl.value !== SELECT_ANY_VALUE) {
         result = result && (priceMap[priceEl.value].min <= ad.offer.price) && (ad.offer.price < priceMap[priceEl.value].max);
       }
-      if (roomsEl.value !== 'any') {
+      if (roomsEl.value !== SELECT_ANY_VALUE) {
         result = result && +roomsEl.value === ad.offer.rooms;
       }
-      if (guestsEl.value !== 'any') {
+      if (guestsEl.value !== SELECT_ANY_VALUE) {
         result = result && +guestsEl.value === ad.offer.guests;
       }
       featuresEls.forEach(function (item) {

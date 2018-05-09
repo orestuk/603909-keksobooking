@@ -1,5 +1,6 @@
 'use strict';
 window.form = (function () {
+  var SUCCESS_POPUP_TIMEOUT = 2000;
   var minPriceMap = {
     bungalo: 0,
     flat: 1000,
@@ -29,7 +30,7 @@ window.form = (function () {
   var address = document.querySelector('input[name=address]');
 
   var renderAdCapacityOptions = function (allowedOptions) {
-    capacity.innerHTML = '';  
+    capacity.innerHTML = '';
     var fragment = document.createDocumentFragment();
     allowedOptions.forEach(function (value) {
       var option = document.createElement('option');
@@ -94,7 +95,7 @@ window.form = (function () {
     successElement.classList.remove('hidden');
     setTimeout(function () {
       successElement.classList.add('hidden');
-    }, 2000);
+    }, SUCCESS_POPUP_TIMEOUT);
   };
   var resetForm = function () {
     formElement.reset();
