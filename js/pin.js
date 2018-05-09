@@ -28,19 +28,19 @@ window.pin = (function () {
   };
   var renderMapPinList = function (ads) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < ads.length; i++) {
-      var pinEl = renderPin(ads[i]);
-      addPinClickListener(pinEl, ads[i]);
-      addPinKeyDownListener(pinEl, ads[i]);
+    ads.forEach(function (item) {
+      var pinEl = renderPin(item);
+      addPinClickListener(pinEl, item);
+      addPinKeyDownListener(pinEl, item);
       fragment.appendChild(pinEl);
-    }
+    });
     mapPinsElement.appendChild(fragment);
   };
   var removeAllPins = function () {
     var pins = document.querySelectorAll('.map__pins button[type=button]');
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].remove();
-    }
+    pins.forEach(function (item) {
+      item.remove();
+    });
   };
   var pin = {
     mapPinsElement: mapPinsElement,

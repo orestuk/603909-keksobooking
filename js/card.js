@@ -46,7 +46,7 @@ window.card = (function () {
     }
   };
   var openPopup = function (ad) {
-    var card = window.card.renderCard(ad);
+    var card = renderCard(ad);
     mapElement.insertBefore(card, mapFilterContainer);
     var popupCloser = card.querySelector('.popup__close');
     popupCloser.addEventListener('click', function () {
@@ -70,7 +70,6 @@ window.card = (function () {
   };
   window.pin.onOpenPopup = openPopup;
   return {
-    renderCard: renderCard,
     getOpenedCard: getOpenedCard,
     closePopup: closePopup
   };
