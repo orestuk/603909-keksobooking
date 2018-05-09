@@ -28,6 +28,7 @@ window.form = (function () {
   var formElement = document.querySelector('.ad-form');
   var fieldsets = document.querySelectorAll('.ad-form fieldset');
   var address = document.querySelector('input[name=address]');
+  var successElement = document.querySelector('.success');
 
   var renderAdCapacityOptions = function (allowedOptions) {
     capacity.innerHTML = '';
@@ -91,7 +92,6 @@ window.form = (function () {
 
   var submitHandler = function () {
     form.onSubmitForm();
-    var successElement = document.querySelector('.success');
     successElement.classList.remove('hidden');
     setTimeout(function () {
       successElement.classList.add('hidden');
