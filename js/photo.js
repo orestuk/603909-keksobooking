@@ -30,7 +30,7 @@
       evt.preventDefault();
     });
     photoEl.addEventListener('drop', function (evt) {
-      var targetParentEl =  evt.target.parentNode;
+      var targetParentEl = evt.target.parentNode;
       var draggedParentEl = draggedEl.parentNode;
       targetParentEl.removeChild(evt.target);
       targetParentEl.appendChild(draggedEl);

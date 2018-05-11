@@ -7,37 +7,49 @@ window.card = (function () {
     house: 'Дом',
     palace: 'Дворец'
   };
-  var cardTemplate = document.querySelector('template').content.querySelector('.map__card');
-  var photoTemplate = document.querySelector('template').content.querySelector('.popup__photo');
+  var openedCardEl = null;
+  var cardTemplateEl = document.querySelector('template').content.querySelector('.map__card');
+  var photoTemplateEl = document.querySelector('template').content.querySelector('.popup__photo');
   var mapFilterContainer = document.querySelector('.map__filters-container');
   var mapElement = document.querySelector('.map');
+  // Card template
+  var titleEl = cardTemplateEl.querySelector('.popup__title');
+  var addressEl = cardTemplateEl.querySelector('.popup__text--address');
+  var priceEl = cardTemplateEl.querySelector('.popup__text--price');
+  var typeEl = cardTemplateEl.querySelector('.popup__type');
+  var capacityEl = cardTemplateEl.querySelector('.popup__text--capacity');
+  var timeEl = cardTemplateEl.querySelector('.popup__text--time');
+  var descriptionEl = cardTemplateEl.querySelector('.popup__description');
+  var photoListEl = cardTemplateEl.querySelector('.popup__photos');
+  var avatarEl = cardTemplateEl.querySelector('.popup__avatar');
+  var featuresEl = cardTemplateEl.querySelector('.popup__features');
   var renderCard = function (ad) {
     // Check if some card already opened and delete it
-    var openedCard = getOpenedCard();
-    if (openedCard !== null) {
-      openedCard.remove();
+    if (openedCardEl !== null) {
+      openedCardEl.remove();
     }
-    var card = cardTemplate.cloneNode(true);
-    card.querySelector('.popup__title').textContent = ad.offer.title;
-    card.querySelector('.popup__text--address').textContent = ad.offer.address;
-    card.querySelector('.popup__text--price').textContent = ad.offer.price + '₽/ночь.';
-    card.querySelector('.popup__type').textContent = typeNameMap[ad.offer.type];
-    card.querySelector('.popup__text--capacity').textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей.';
-    card.querySelector('.popup__text--time').textContent = 'заезд после ' + ad.offer.checking + ', выезд до ' + ad.offer.checkout + '.';
+    titleEl.textContent = ad.offer.title;
+    addressEl.textContent = ad.offer.address;
+    priceEl.textContent = ad.offer.price + '₽/ночь.';
+    typeEl.textContent = typeNameMap[ad.offer.type];
+    capacityEl.textContent = ad.offer.rooms + ' комнаты для ' + ad.offer.guests + ' гостей.';
+    timeEl.textContent = 'заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout + '.';
+    avatarEl.src = ad.author.avatar;
+    featuresEl.style.display = ad.offer.features.length === 0 ? 'none' : 'block';
     FEATURES.forEach(function (value) {
-      if (ad.offer.features.indexOf(value) === -1) {
-        card.querySelector('.popup__feature--' + value).remove();
-      }
+      var featureEl = cardTemplateEl.querySelector('.popup__feature--' + value);
+      featureEl.style.visibility = ad.offer.features.indexOf(value) === -1 ? 'hidden' : 'visible';
     });
-    card.querySelector('.popup__description').textContent = ad.offer.description;
-    card.querySelector('.popup__photos').innerHTML = '';
+    descriptionEl.textContent = ad.offer.description;
+    photoListEl.innerHTML = '';
+    var cardEl = cardTemplateEl.cloneNode(true);
     ad.offer.photos.forEach(function (value) {
-      var photo = photoTemplate.cloneNode(true);
-      photo.src = value;
-      card.appendChild(photo);
+      var photoEl = photoTemplateEl.cloneNode(true);
+      photoTemplateEl.src = value;
+      cardEl.appendChild(photoEl);
     });
-    card.querySelector('.popup__avatar').src = ad.author.avatar;
-    return card;
+    openedCardEl = cardEl;
+    return cardEl;
   };
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === window.data.KeyCode.ESC) {
@@ -66,7 +78,7 @@ window.card = (function () {
     document.removeEventListener('keydown', onPopupEscPress);
   };
   var getOpenedCard = function () {
-    return document.querySelector('.map__card');
+    return openedCardEl;
   };
   window.pin.onOpenPopup = openPopup;
   return {
