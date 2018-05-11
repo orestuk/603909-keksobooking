@@ -1,6 +1,6 @@
 'use strict';
-var ERROR_POPUP_TIMEOUT = 3000;
 window.error = (function () {
+  var ERROR_POPUP_TIMEOUT = 3000;
   var renderError = function (erMessage) {
     var err = document.createElement('div');
     err.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
