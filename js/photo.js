@@ -1,5 +1,5 @@
 'use strict';
-(function () {
+window.photo = (function () {
   var fileChooserEl = document.querySelector('.ad-form__input');
   var dropAreaEl = document.querySelector('.ad-form__upload');
   var photoContainerEl = document.querySelector('.ad-form__photo-container');
@@ -59,4 +59,13 @@
   document.addEventListener('drop', function (evt) {
     evt.preventDefault();
   });
+  var resetPhotos = function () {
+    var photoListEl = document.querySelectorAll('.ad-form__photo');
+    photoListEl.forEach(function (item) {
+      item.remove();
+    });
+  };
+  return {
+    resetPhotos: resetPhotos
+  };
 })();

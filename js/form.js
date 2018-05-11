@@ -19,102 +19,101 @@ window.form = (function () {
     1: 'для 1 гостя',
     0: 'не для гостей'
   };
-  var timein = document.querySelector('select[name=timein]');
-  var timeout = document.querySelector('select[name=timeout]');
-  var rooms = document.querySelector('select[name=rooms]');
-  var capacity = document.querySelector('select[name=capacity]');
-  var type = document.querySelector('select[name=type]');
-  var price = document.querySelector('input[name=price]');
-  var formElement = document.querySelector('.ad-form');
-  var fieldsets = document.querySelectorAll('.ad-form fieldset');
-  var address = document.querySelector('input[name=address]');
-  var successElement = document.querySelector('.success');
+  var timeinEl = document.querySelector('select[name=timein]');
+  var timeoutEl = document.querySelector('select[name=timeout]');
+  var roomsEl = document.querySelector('select[name=rooms]');
+  var capacityEl = document.querySelector('select[name=capacity]');
+  var typeEl = document.querySelector('select[name=type]');
+  var priceEl = document.querySelector('input[name=price]');
+  var formEl = document.querySelector('.ad-form');
+  var fieldsetsEl = document.querySelectorAll('.ad-form fieldset');
+  var addressEl = document.querySelector('input[name=address]');
+  var successEl = document.querySelector('.success');
 
   var renderAdCapacityOptions = function (allowedOptions) {
-    capacity.innerHTML = '';
+    capacityEl.innerHTML = '';
     var fragment = document.createDocumentFragment();
     allowedOptions.forEach(function (value) {
-      var option = document.createElement('option');
-      option.value = value;
-      option.textContent = capacityNameMap[option.value];
-      fragment.appendChild(option);
+      var optionEl = document.createElement('option');
+      optionEl.value = value;
+      optionEl.textContent = capacityNameMap[optionEl.value];
+      fragment.appendChild(optionEl);
     });
-    capacity.appendChild(fragment);
+    capacityEl.appendChild(fragment);
   };
 
   var setCapacityOptions = function () {
-    var currentValue = capacity.value;
-    var allowedOpt = capacityRoomsMap[rooms.value];
+    var currentValue = capacityEl.value;
+    var allowedOpt = capacityRoomsMap[roomsEl.value];
     renderAdCapacityOptions(allowedOpt);
     if (allowedOpt.indexOf(+currentValue) !== -1) {
-      capacity.value = currentValue;
+      capacityEl.value = currentValue;
     }
   };
 
   var setPriceAttributes = function () {
-    price.placeholder = minPriceMap[type.value];
-    price.min = minPriceMap[type.value];
+    priceEl.placeholder = minPriceMap[typeEl.value];
+    priceEl.min = minPriceMap[typeEl.value];
   };
 
   var setAddressValue = function (loc) {
-    address.value = loc.x + ', ' + loc.y;
+    addressEl.value = loc.x + ', ' + loc.y;
   };
 
   var disableForm = function () {
-    formElement.classList.add('ad-form--disabled');
-    fieldsets.forEach(function (value) {
+    formEl.classList.add('ad-form--disabled');
+    fieldsetsEl.forEach(function (value) {
       value.disabled = true;
     });
   };
 
   var enableForm = function () {
-    formElement.classList.remove('ad-form--disabled');
-    fieldsets.forEach(function (value) {
+    formEl.classList.remove('ad-form--disabled');
+    fieldsetsEl.forEach(function (value) {
       value.disabled = false;
     });
   };
 
-  type.addEventListener('change', function () {
+  typeEl.addEventListener('change', function () {
     setPriceAttributes();
   });
 
-  timein.addEventListener('change', function () {
-    timeout.value = timein.value;
+  timeinEl.addEventListener('change', function () {
+    timeoutEl.value = timeinEl.value;
   });
 
-  timeout.addEventListener('change', function () {
-    timein.value = timeout.value;
+  timeoutEl.addEventListener('change', function () {
+    timeinEl.value = timeoutEl.value;
   });
 
-  rooms.addEventListener('change', function () {
+  roomsEl.addEventListener('change', function () {
     setCapacityOptions();
   });
 
   var submitHandler = function () {
     form.onSubmitForm();
-    successElement.classList.remove('hidden');
+    successEl.classList.remove('hidden');
     setTimeout(function () {
-      successElement.classList.add('hidden');
+      successEl.classList.add('hidden');
     }, SUCCESS_POPUP_TIMEOUT);
   };
   var resetForm = function () {
-    formElement.reset();
+    formEl.reset();
   };
 
-  formElement.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(formElement), submitHandler, window.error.renderError);
+  formEl.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(formEl), submitHandler, window.error.renderError);
     evt.preventDefault();
   });
 
-  formElement.addEventListener('reset', function () {
+  formEl.addEventListener('reset', function () {
     form.onResetForm();
   });
 
-  // Initiate formElement fields
+  // Initiate form element fields
   setPriceAttributes();
   setCapacityOptions();
   var form = {
-    formElement: formElement,
     onSubmitForm: function () {},
     onResetForm: function () {},
     enableForm: enableForm,

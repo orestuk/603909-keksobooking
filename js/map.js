@@ -9,14 +9,14 @@ window.map = (function () {
   var MAIN_PIN_TOP = 375;
 
   var activeState = false;
-  var mapElement = document.querySelector('.map');
-  var mainPin = document.querySelector('.map__pin--main');
+  var mapEl = document.querySelector('.map');
+  var mainPinEl = document.querySelector('.map__pin--main');
 
   var getMainPinLocation = function () {
     var result = {};
     var pinHeight = activeState ? MAIN_PIN_ACTIVE_HEIGHT : MAIN_PIN_INACTIVE_HEIGHT;
-    result.x = mainPin.offsetLeft + MAIN_PIN_WIDTH / 2;
-    result.y = mainPin.offsetTop + pinHeight;
+    result.x = mainPinEl.offsetLeft + MAIN_PIN_WIDTH / 2;
+    result.y = mainPinEl.offsetTop + pinHeight;
     return result;
   };
   var successfulHandler = function (data) {
@@ -30,30 +30,32 @@ window.map = (function () {
       return;
     }
     window.backend.load(successfulHandler, errorHandler);
-    mapElement.classList.remove('map--faded');
+    mapEl.classList.remove('map--faded');
     window.form.enableForm();
     activeState = true;
   };
   var setInactiveState = function () {
-    mapElement.classList.add('map--faded');
-    mainPin.style.left = MAIN_PIN_LEFT + 'px';
-    mainPin.style.top = MAIN_PIN_TOP + 'px';
+    mapEl.classList.add('map--faded');
+    mainPinEl.style.left = MAIN_PIN_LEFT + 'px';
+    mainPinEl.style.top = MAIN_PIN_TOP + 'px';
     window.card.closePopup(window.card.getOpenedCard());
     window.pin.removeAllPins();
     window.form.disableForm();
     window.form.resetForm();
+    window.avatar.resetAvatar();
+    window.photo.resetPhotos();
     window.form.setAddressValue(getMainPinLocation());
     window.filter.resetFilter();
     activeState = false;
   };
-  mainPin.addEventListener('mouseup', function () {
+  mainPinEl.addEventListener('mouseup', function () {
     if (!activeState) {
       setActiveState();
     }
     window.form.setAddressValue(getMainPinLocation());
   });
 
-  mainPin.addEventListener('mousedown', function (evt) {
+  mainPinEl.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
     var startPosition = {
       x: evt.clientX,
@@ -65,8 +67,8 @@ window.map = (function () {
         x: startPosition.x - moveEvt.clientX,
         y: startPosition.y - moveEvt.clientY
       };
-      var newX = mainPin.offsetLeft - shift.x;
-      var newY = mainPin.offsetTop - shift.y;
+      var newX = mainPinEl.offsetLeft - shift.x;
+      var newY = mainPinEl.offsetTop - shift.y;
       startPosition = {
         x: moveEvt.clientX,
         y: moveEvt.clientY
@@ -78,13 +80,13 @@ window.map = (function () {
         newY = MIN_PIN_Y - MAIN_PIN_ACTIVE_HEIGHT;
       }
       // Correct Calculate new X position according to the area region
-      if (newX + MAIN_PIN_WIDTH > window.pin.mapPinsElement.offsetWidth) {
-        newX = window.pin.mapPinsElement.offsetWidth - MAIN_PIN_WIDTH / 2;
+      if (newX + MAIN_PIN_WIDTH > window.pin.mapPinsEl.offsetWidth) {
+        newX = window.pin.mapPinsEl.offsetWidth - MAIN_PIN_WIDTH / 2;
       } else if (newX + MAIN_PIN_WIDTH / 2 < 0) {
         newX = 0 - MAIN_PIN_WIDTH / 2;
       }
-      mainPin.style.left = newX + 'px';
-      mainPin.style.top = newY + 'px';
+      mainPinEl.style.left = newX + 'px';
+      mainPinEl.style.top = newY + 'px';
       window.form.setAddressValue(getMainPinLocation());
     };
 

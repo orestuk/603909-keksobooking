@@ -1,5 +1,6 @@
 'use strict';
-(function () {
+window.avatar = (function () {
+  var defaultAvatarSrc = 'img/muffin-grey.svg';
   var fileChooserEl = document.querySelector('.ad-form-header__input');
   var dropAreaEl = document.querySelector('.ad-form__field');
   var previewEl = document.querySelector('.ad-form-header__preview img');
@@ -24,4 +25,10 @@
     window.fileReader.loadFile(evt.dataTransfer.files[0], previewEl);
     evt.preventDefault();
   });
+  var resetAvatar = function () {
+    previewEl.src = defaultAvatarSrc;
+  };
+  return {
+    resetAvatar: resetAvatar
+  };
 })();
