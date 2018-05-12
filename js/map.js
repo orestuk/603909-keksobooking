@@ -80,7 +80,7 @@ window.map = (function () {
     mapEl.classList.add('map--faded');
     mainPinEl.style.left = MAIN_PIN_LEFT + 'px';
     mainPinEl.style.top = MAIN_PIN_TOP + 'px';
-    window.card.closePopup(window.card.getOpenedCard());
+    window.card.closePopup();
     window.pin.removeAllPins();
     window.form.disableForm();
     window.form.resetForm();

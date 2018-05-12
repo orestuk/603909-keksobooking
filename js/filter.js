@@ -24,7 +24,7 @@ window.filter = (function () {
   var featuresEls = mapFilters.querySelectorAll('input[name=features]');
   var updatePins = function () {
     window.pin.removeAllPins();
-    window.card.closePopup(window.card.getOpenedCard());
+    window.card.closePopup();
     var list = adItems.filter(function (ad) {
       var result = true;
       if (typeEl.value !== SELECT_ANY_VALUE) {

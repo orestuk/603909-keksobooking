@@ -42,19 +42,18 @@ window.card = (function () {
     });
     descriptionEl.textContent = ad.offer.description;
     photoListEl.innerHTML = '';
-    var cardEl = cardTemplateEl.cloneNode(true);
+    openedCardEl = cardTemplateEl.cloneNode(true);
     ad.offer.photos.forEach(function (value) {
       var photoEl = photoTemplateEl.cloneNode(true);
       photoTemplateEl.src = value;
-      cardEl.appendChild(photoEl);
+      openedCardEl.appendChild(photoEl);
     });
-    openedCardEl = cardEl;
-    return cardEl;
+    return openedCardEl;
   };
   var onPopupEscPress = function (evt) {
     if (evt.keyCode === window.data.KeyCode.ESC) {
       document.removeEventListener('keydown', onPopupEscPress);
-      document.querySelector('.map__card').remove();
+      openedCardEl.remove();
     }
   };
   var openPopup = function (ad) {
@@ -62,27 +61,23 @@ window.card = (function () {
     mapElementEl.insertBefore(cardEl, mapFilterContainerEl);
     var popupCloser = cardEl.querySelector('.popup__close');
     popupCloser.addEventListener('click', function () {
-      closePopup(cardEl);
+      closePopup();
     });
     popupCloser.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.data.KeyCode.ENTER) {
-        closePopup(cardEl);
+        closePopup();
       }
     });
     document.addEventListener('keydown', onPopupEscPress);
   };
-  var closePopup = function (cardEl) {
-    if (cardEl !== null) {
-      cardEl.remove();
+  var closePopup = function () {
+    if (openedCardEl !== null) {
+      openedCardEl.remove();
     }
     document.removeEventListener('keydown', onPopupEscPress);
   };
-  var getOpenedCard = function () {
-    return openedCardEl;
-  };
   window.pin.onOpenPopup = openPopup;
   return {
-    getOpenedCard: getOpenedCard,
     closePopup: closePopup
   };
 })();
