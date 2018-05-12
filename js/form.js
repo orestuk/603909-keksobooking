@@ -29,6 +29,7 @@ window.form = (function () {
   var fieldsetsEl = document.querySelectorAll('.ad-form fieldset');
   var addressEl = document.querySelector('input[name=address]');
   var successEl = document.querySelector('.success');
+  var resetButtonEL = document.querySelector('.ad-form__reset');
 
   var renderAdCapacityOptions = function (allowedOptions) {
     capacityEl.innerHTML = '';
@@ -106,7 +107,7 @@ window.form = (function () {
     evt.preventDefault();
   });
 
-  formEl.addEventListener('reset', function (evt) {
+  resetButtonEL.addEventListener('click', function (evt) {
     form.onResetForm();
     evt.preventDefault();
   });
