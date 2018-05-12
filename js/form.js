@@ -56,8 +56,8 @@ window.form = (function () {
     priceEl.min = minPriceMap[typeEl.value];
   };
 
-  var setAddressValue = function (loc) {
-    addressEl.value = loc.x + ', ' + loc.y;
+  var setAddressValue = function (location) {
+    addressEl.value = location.x + ', ' + location.y;
   };
 
   var disableForm = function () {

@@ -17,7 +17,7 @@ window.photo = (function () {
 
     photoEl.addEventListener('dragstart', function (evt) {
       draggedEl = evt.target;
-      evt.dataTransfer.dropEffect = 'copy';
+      evt.dataTransfer.dropEffect = 'move';
     });
     photoEl.addEventListener('dragover', function (evt) {
       evt.preventDefault();
