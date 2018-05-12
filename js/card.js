@@ -38,7 +38,7 @@ window.card = (function () {
     featuresEl.style.display = ad.offer.features.length === 0 ? 'none' : 'block';
     FEATURES.forEach(function (value) {
       var featureEl = cardTemplateEl.querySelector('.popup__feature--' + value);
-      featureEl.style.visibility = ad.offer.features.indexOf(value) === -1 ? 'hidden' : 'visible';
+      featureEl.style.display = ad.offer.features.indexOf(value) === -1 ? 'none' : 'inline-block';
     });
     descriptionEl.textContent = ad.offer.description;
     photoListEl.innerHTML = '';
