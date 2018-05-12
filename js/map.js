@@ -63,23 +63,32 @@ window.map = (function () {
     var pinHeight = activeState ? MainPinSize.ACTIVE_STATE_HEIGHT : MainPinSize.INACTIVE_STATE_HEIGHT;
     return new Location(mainPinEl.offsetLeft + MainPinSize.WIDTH / 2, mainPinEl.offsetTop + pinHeight);
   };
+  var setMainPinAddress = function () {
+    window.form.setAddressValue(getMainPinLocation());
+  };
   var successfulHandler = function (data) {
     window.filter.setFilter(data);
   };
   var errorHandler = function (erMessage) {
     window.error.renderError(erMessage);
   };
+  var enableMap = function () {
+    mapEl.classList.remove('map--faded');
+  };
+  var disableMap = function () {
+    mapEl.classList.add('map--faded');
+  };
   var setActiveState = function () {
     if (activeState) {
       return;
     }
     window.backend.load(successfulHandler, errorHandler);
-    mapEl.classList.remove('map--faded');
+    enableMap();
     window.form.enableForm();
     activeState = true;
   };
   var setInactiveState = function () {
-    mapEl.classList.add('map--faded');
+    disableMap();
     mainPinEl.style.left = MainPinStartLocation.LEFT + 'px';
     mainPinEl.style.top = MainPinStartLocation.TOP + 'px';
     window.card.closePopup();
@@ -88,7 +97,7 @@ window.map = (function () {
     window.form.resetForm();
     window.avatar.resetAvatar();
     window.photo.resetPhotos();
-    window.form.setAddressValue(getMainPinLocation());
+    setMainPinAddress();
     window.filter.resetFilter();
     activeState = false;
   };
@@ -96,7 +105,7 @@ window.map = (function () {
     if (!activeState) {
       setActiveState();
     }
-    window.form.setAddressValue(getMainPinLocation());
+    setMainPinAddress();
   });
 
   mainPinEl.addEventListener('mousedown', function (evt) {
@@ -109,7 +118,7 @@ window.map = (function () {
       startLocation = new Location(moveEvt.clientX, moveEvt.clientY);
       mainPinEl.style.left = newLocation.x + 'px';
       mainPinEl.style.top = newLocation.y + 'px';
-      window.form.setAddressValue(getMainPinLocation());
+      setMainPinAddress();
     };
 
     var onMouseUp = function (upEvt) {

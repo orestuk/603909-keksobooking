@@ -7,9 +7,9 @@ window.photo = (function () {
 
   var renderPhoto = function (fileName) {
     var photoEl = document.createElement('div');
+    var imageEL = document.createElement('img');
     photoEl.classList.add('ad-form__photo');
     photoEl.draggable = true;
-    var imageEL = document.createElement('img');
     imageEL.style.width = '70px';
     imageEL.style.height = '70px';
     photoEl.appendChild(imageEL);
