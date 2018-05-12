@@ -42,12 +42,12 @@ window.card = (function () {
     });
     descriptionEl.textContent = ad.offer.description;
     photoListEl.innerHTML = '';
-    openedCardEl = cardTemplateEl.cloneNode(true);
     ad.offer.photos.forEach(function (value) {
       var photoEl = photoTemplateEl.cloneNode(true);
       photoTemplateEl.src = value;
-      openedCardEl.appendChild(photoEl);
+      photoListEl.appendChild(photoEl);
     });
+    openedCardEl = cardTemplateEl.cloneNode(true);
     return openedCardEl;
   };
   var onPopupEscPress = function (evt) {

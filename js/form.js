@@ -106,8 +106,9 @@ window.form = (function () {
     evt.preventDefault();
   });
 
-  formEl.addEventListener('reset', function () {
+  formEl.addEventListener('reset', function (evt) {
     form.onResetForm();
+    evt.preventDefault();
   });
 
   // Initiate form element fields

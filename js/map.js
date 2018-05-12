@@ -1,13 +1,18 @@
 'use strict';
 window.map = (function () {
-  var MAX_PIN_Y = 500;
-  var MIN_PIN_Y = 150;
-  var MAIN_PIN_ACTIVE_HEIGHT = 84;
-  var MAIN_PIN_INACTIVE_HEIGHT = 200;
-  var MAIN_PIN_WIDTH = 62;
-  var MAIN_PIN_LEFT = 570;
-  var MAIN_PIN_TOP = 375;
-
+  var MainPinConstraints = {
+    MIN_Y: 150,
+    MAX_Y: 500
+  };
+  var MainPinSize = {
+    ACTIVE_STATE_HEIGHT: 84,
+    INACTIVE_STATE_HEIGHT: 200,
+    WIDTH: 62
+  };
+  var MainPinStartLocation = {
+    LEFT: 570,
+    TOP: 375
+  };
   var activeState = false;
   var mapEl = document.querySelector('.map');
   var mainPinEl = document.querySelector('.map__pin--main');
@@ -30,8 +35,8 @@ window.map = (function () {
   };
 
   var PinLocation = function (x, y) {
-    this._constraints = new Rect(0, MIN_PIN_Y, window.pin.mapPinsEl.offsetWidth, MAX_PIN_Y);
-    this._pinSize = new Size(MAIN_PIN_WIDTH, MAIN_PIN_ACTIVE_HEIGHT);
+    this._constraints = new Rect(0, MainPinConstraints.MIN_Y, window.pin.mapPinsEl.offsetWidth, MainPinConstraints.MAX_Y);
+    this._pinSize = new Size(MainPinSize.WIDTH, MainPinSize.ACTIVE_STATE_HEIGHT);
     this.setX(x);
     this.setY(y);
   };
@@ -55,11 +60,8 @@ window.map = (function () {
   };
 
   var getMainPinLocation = function () {
-    var result = {};
-    var pinHeight = activeState ? MAIN_PIN_ACTIVE_HEIGHT : MAIN_PIN_INACTIVE_HEIGHT;
-    result.x = mainPinEl.offsetLeft + MAIN_PIN_WIDTH / 2;
-    result.y = mainPinEl.offsetTop + pinHeight;
-    return result;
+    var pinHeight = activeState ? MainPinSize.ACTIVE_STATE_HEIGHT : MainPinSize.INACTIVE_STATE_HEIGHT;
+    return new Location(mainPinEl.offsetLeft + MainPinSize.WIDTH / 2, mainPinEl.offsetTop + pinHeight);
   };
   var successfulHandler = function (data) {
     window.filter.setFilter(data);
@@ -78,8 +80,8 @@ window.map = (function () {
   };
   var setInactiveState = function () {
     mapEl.classList.add('map--faded');
-    mainPinEl.style.left = MAIN_PIN_LEFT + 'px';
-    mainPinEl.style.top = MAIN_PIN_TOP + 'px';
+    mainPinEl.style.left = MainPinStartLocation.LEFT + 'px';
+    mainPinEl.style.top = MainPinStartLocation.TOP + 'px';
     window.card.closePopup();
     window.pin.removeAllPins();
     window.form.disableForm();
